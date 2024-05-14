@@ -36,6 +36,7 @@ public class ReviewServiceImpl implements ReviewService{
 
         review.setContent(request.getContent());
         review.setPoint(request.getPoint());
+        review.setImages(request.getImages());
     }
 
     @Override
