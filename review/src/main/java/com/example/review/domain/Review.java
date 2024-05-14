@@ -47,4 +47,9 @@ public class Review {
 
     @Column(name = "USER_NAME")
     private String userName;
+
+    @Column(name = "images")
+    @Convert(converter = JsonStringListConverter.class)
+    @Setter
+    private List<String> images;
 }
