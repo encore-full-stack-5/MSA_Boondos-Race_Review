@@ -15,7 +15,6 @@ import java.util.UUID;
 public class ReviewRequest {
     private int point;
     private String content;
-    private UUID userId;
 
 
     public Review toEntity(TokenInfoResponse tokenInfoResponse){
