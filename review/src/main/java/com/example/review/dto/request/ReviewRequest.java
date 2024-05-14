@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -16,11 +17,14 @@ public class ReviewRequest {
     private int point;
     private String content;
 
+    private List<String> images;
+
 
     public Review toEntity(TokenInfoResponse tokenInfoResponse){
         return Review.builder()
                 .content(content)
                 .point(point)
+                .images(images)
                 .userId(tokenInfoResponse.id())
                 .userName(tokenInfoResponse.nickname())
                 .build();
