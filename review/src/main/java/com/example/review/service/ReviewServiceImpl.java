@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -20,9 +21,9 @@ public class ReviewServiceImpl implements ReviewService{
     private final ApiAuth apiAuth;
 
     @Override
-    public void createReview(String token, ReviewRequest request) {
+    public void createReview(String token, ReviewRequest request ,Long productId) {
         TokenInfoResponse parseToken = apiAuth.parseToken(token);//토큰으로 부터 받아오는 아이디
-        reviewRepository.save(request.toEntity(parseToken));
+        reviewRepository.save(request.toEntity(parseToken,productId));
     }
 
     @Override
@@ -51,6 +52,14 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public List<ReviewResponse> getAllReviews(Long productId) {
         List<Review> reviews = reviewRepository.findByProductId(productId);
+        return reviews.stream().map(ReviewResponse::from).toList();
+    }
+
+    @Override
+    public List<ReviewResponse> getMyReviews(String token) {
+        TokenInfoResponse parseToken = apiAuth.parseToken(token);//토큰으로 부터 받아오는 아이디
+        if(parseToken == null) throw  new IllegalArgumentException("토큰 정보 없음");
+        List<Review>reviews = reviewRepository.findAllByUserId(parseToken.id());
         return reviews.stream().map(ReviewResponse::from).toList();
     }
 

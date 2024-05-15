@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ReviewService {
 
-  void createReview(String token, ReviewRequest request);
+  void createReview(String token, ReviewRequest request,Long productId);
 
   void updateReview(String token, Long reviewId , UpdateRequest request);
 
@@ -17,4 +17,5 @@ public interface ReviewService {
   List<ReviewResponse> getAllReviews(Long productId);
 
 
+  List<ReviewResponse> getMyReviews(String token);
 }

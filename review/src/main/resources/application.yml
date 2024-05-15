@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: REVIEW-SERVICE
+  datasource:
+    url: jdbc:mysql://localhost:3306/boondos_review?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+    username: root
+    password: 1234
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+        automatic_dirty_checking: true
+
+# Eureka ?? ?? ??
+# eureka:
+#   client:
+#     service-url:
+#       defaultZone: http://192.168.0.16:8761/eureka/
+#   instance:
+#     instance-id: REVIEW-SERVICE
+#     prefer-ip-address: true
+#     ip-address: 192.168.0.27
+
+
+  kafka:
+    bootstrap-servers: 192.168.219.249:8008
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+      group-id: product
+      auto-offset-reset: earliest
+
+kafka:
+  product:
+    name: review-topic
