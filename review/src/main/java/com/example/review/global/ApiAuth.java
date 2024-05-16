@@ -12,6 +12,7 @@ public class ApiAuth {
     private final FeignAuth feignAuth;
 
     public TokenInfoResponse parseToken(String token) {
+
         return feignAuth.parseToken(token);
     }
 }
