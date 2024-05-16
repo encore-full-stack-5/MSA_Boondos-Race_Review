@@ -3,6 +3,7 @@ package com.example.review.domain;
 import com.example.review.global.JsonStringListConverter;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -52,4 +53,5 @@ public class Review {
     @Convert(converter = JsonStringListConverter.class)
     @Setter
     private List<String> images;
+
 }
