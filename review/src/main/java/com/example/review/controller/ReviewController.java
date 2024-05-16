@@ -3,6 +3,7 @@ package com.example.review.controller;
 import com.example.review.domain.ReviewProducer;
 import com.example.review.dto.KafkaStatus;
 import com.example.review.dto.request.KafkaRequest;
+import com.example.review.dto.request.ProductKafkaRequest;
 import com.example.review.dto.request.ReviewRequest;
 import com.example.review.dto.request.UpdateRequest;
 import com.example.review.dto.response.ReviewResponse;
@@ -21,7 +22,7 @@ public class ReviewController {
 
     private final ReviewService reviewService;
     private final ReviewProducer reviewProducer;
-    private final List<KafkaStatus<KafkaRequest>> list = new ArrayList<>();
+
     @PostMapping("/{productId}")
     @ResponseStatus(value = HttpStatus.CREATED)
     public void createReview(@RequestHeader("Authorization") String token
@@ -31,15 +32,16 @@ public class ReviewController {
         KafkaRequest kafkaRequest = new KafkaRequest();
         kafkaRequest.setProductId(productId);
         kafkaRequest.setCheck(true);
+        reviewProducer.send(kafkaRequest);
 
-        KafkaStatus<KafkaRequest> reviewKafkaStatus = new KafkaStatus<>(kafkaRequest, "insert");
-        list.add(reviewKafkaStatus);
-        reviewProducer.send(kafkaRequest,"insert");
-        list.remove(reviewKafkaStatus);
+        ProductKafkaRequest productKafkaRequest = new ProductKafkaRequest();
+        productKafkaRequest.setProductId(productId);
+        reviewProducer.productSend(productKafkaRequest);
+
         reviewService.createReview(token.substring(7),request,productId);
     }
 
-    @PutMapping("/{ReviewId}")
+    @PutMapping("/my/{ReviewId}")
     @ResponseStatus(value = HttpStatus.OK)
     public void updateReview(@RequestHeader("Authorization") String token,
                              @PathVariable Long ReviewId,
